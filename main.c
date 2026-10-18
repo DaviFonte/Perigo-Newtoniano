@@ -32,6 +32,13 @@ int main()
 	float larguraPlayer = 50;
 	float alturaPlayer = 50;
 	float maxAlt = 0;/*o maximo da altura do pulo*/
+	int noChao = 1; /* Variavel para saber se o jogador esta no chao ou no ar */
+
+	/* Variaveis da parede */
+	float paredeX = 500;
+	float paredeY = 350;
+	float larguraParede = 50;
+	float alturaParede = 150;
 
 
 
@@ -87,8 +94,9 @@ int main()
 			}
 
 			if (evento.keyboard.keycode == ALLEGRO_KEY_SPACE) {
-				if (playerY == 450) {
+				if (noChao) {
 					pulando = 1;
+					noChao = 0;
 					maxAlt = -15;
 				}
 			}
@@ -112,20 +120,64 @@ int main()
 		{
 			if (esquerda) {
 				playerX -= 5;
-			}
-			if (direita) {
-				playerX += 5;
+
+				if ( /* Verifica colisão com a parede */
+					playerX < paredeX + larguraParede &&
+					playerX + larguraPlayer > paredeX &&
+					playerY < paredeY + alturaParede &&
+					playerY + alturaPlayer > paredeY
+					)
+				{
+					playerX = paredeX + larguraParede; /* Reposiciona o jogador para fora da parede pela esquerda */
+				}
 			}
 
-			if (pulando){ 
+
+			if (direita) {
+				playerX += 5;
+
+				if ( /* Verifica colisão com a parede */
+					playerX < paredeX + larguraParede &&
+					playerX + larguraPlayer > paredeX &&
+					playerY < paredeY + alturaParede &&
+					playerY + alturaPlayer > paredeY
+					)
+				{
+					playerX = paredeX - larguraPlayer; /* Reposiciona o jogador para fora da parede pela direita */
+				}
+			}
+
+			if (pulando) {
+
+				float anteriorY = playerY;
+
 				playerY += maxAlt;
 				maxAlt += 0.5;
-				if (playerY == 450) {
+
+				/* Verifica colisão com a parede */
+				if (playerY >= 450) {
+
+					playerY = 450;
 					maxAlt = 0;
+					pulando = 0;
+					noChao = 1;
+				}
+
+				if (maxAlt > 0 && /* jogador colidir por cima da parede */
+					anteriorY + alturaPlayer <= paredeY &&
+					playerY + alturaPlayer >= paredeY &&
+					playerX + larguraPlayer > paredeX &&
+					playerX < paredeX + larguraParede
+					)
+				{
+					playerY = paredeY - alturaPlayer; /* Reposiciona o jogador para fora da parede por cima */
+					maxAlt = 0;
+					pulando = 0;
+					noChao = 1;
 				}
 			}
 		}
-		
+
 
 
 		al_clear_to_color(al_map_rgb(30, 30, 30)); /* Limpa a cor da janela e, coloca outra no lugar */
@@ -135,6 +187,15 @@ int main()
 			800,
 			600,
 			al_map_rgb(255, 100, 100)
+		);
+
+
+		al_draw_filled_rectangle( /* Desenha a parede */
+			paredeX,
+			paredeY,
+			paredeX + larguraParede,
+			paredeY + alturaParede,
+			al_map_rgb(100, 150, 255)
 		);
 
 
