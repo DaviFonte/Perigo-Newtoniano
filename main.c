@@ -114,7 +114,7 @@ int main()
 			if (evento.keyboard.keycode == ALLEGRO_KEY_D) { /* Parada Direita*/
 				direita = 0;
 			}
-	
+
 		}
 
 		if (evento.type == ALLEGRO_EVENT_TIMER)
