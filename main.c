@@ -41,7 +41,20 @@ int main()
 	float alturaParede = 150;
 
 
+	/* bloco  */
+	float blocoX = 300;
+	float blocoY = 200;
+	float largurabloco = 100;
+	float alturabloco = 50;
 
+	/* bloco2 kk  */
+	float blocoX2 = 80;
+	float blocoY2 = 200;
+	float largurabloco2 = 90;
+	float alturabloco2= 50;
+
+
+	int espaco= 0;
 	int rodando = 1; /* Variável para controlar o loop do jogo */
 	int esquerda = 0;
 	int direita = 0;
@@ -87,6 +100,7 @@ int main()
 		{
 			if (evento.keyboard.keycode == ALLEGRO_KEY_A) { /* altera esquerda*/
 				esquerda = 1;
+				
 			}
 
 			if (evento.keyboard.keycode == ALLEGRO_KEY_D) { /* altera direita*/
@@ -97,7 +111,8 @@ int main()
 				if (noChao) {
 					pulando = 1;
 					noChao = 0;
-					maxAlt = -15;
+					maxAlt = -14;
+					
 				}
 			}
 
@@ -114,28 +129,47 @@ int main()
 			if (evento.keyboard.keycode == ALLEGRO_KEY_D) { /* Parada Direita*/
 				direita = 0;
 			}
+			if (evento.keyboard.keycode == ALLEGRO_KEY_SPACE) {
+					playerY += maxAlt;
+					maxAlt += 5;
+					noChao = 0;
+			}
 
 		}
 
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
 			if (esquerda) {
-				playerX -= 5;
+				if (playerX <= 0) {
+					playerX = 0;
+				}
+					playerX -= 5;
+
 
 				if ( /* Verifica colisão com a parede */
 					playerX < paredeX + larguraParede &&
 					playerX + larguraPlayer > paredeX &&
 					playerY < paredeY + alturaParede &&
-					playerY + alturaPlayer > paredeY
-					)
+					playerY + alturaPlayer > paredeY)
 				{
+
 					playerX = paredeX + larguraParede; /* Reposiciona o jogador para fora da parede pela esquerda */
 				}
+
+					if (playerX < blocoX + largurabloco && playerX + larguraPlayer > blocoX && playerY < blocoY + alturabloco && playerY + alturaPlayer > paredeY) {
+						playerX = blocoX + largurabloco;
+					}
+					if (playerX < blocoX2 + largurabloco2 && playerX + larguraPlayer > blocoX2 && playerY < blocoY2 + alturabloco && playerY + alturaPlayer > blocoY2) {
+						playerX = blocoX2 - largurabloco2;
+					}
 			}
 
 
 			if (direita) {
-				playerX += 5;
+				if (playerX >= 750) {
+					playerX = 750;
+				}
+					playerX += 5;
 
 				if ( /* Verifica colisão com a parede */
 					playerX < paredeX + larguraParede &&
@@ -146,10 +180,19 @@ int main()
 				{
 					playerX = paredeX - larguraPlayer; /* Reposiciona o jogador para fora da parede pela direita */
 				}
+
+				if (playerX < blocoX + largurabloco && playerX + larguraPlayer > blocoX && playerY < blocoY + alturabloco && playerY + alturaPlayer > blocoY) {
+					playerX = blocoX - largurabloco;
+				}
+
+				if (playerX < blocoX2 + largurabloco2 && playerX + larguraPlayer > blocoX2 && playerY < blocoY2 + alturabloco && playerY + alturaPlayer > blocoY2) {
+					playerX = blocoX2 - largurabloco2;
+				}
+
 			}
 
 			if (pulando) {
-
+				
 				playerY += maxAlt;
 				maxAlt += 0.5;
 
@@ -157,28 +200,44 @@ int main()
 				if (playerY >= 450) {
 					playerY = 450;
 					maxAlt = 0;
-					pulando = 0;
 					noChao = 1;
+					
 				}
 				if (maxAlt > 0 && playerY + alturaPlayer >= paredeY && playerX + larguraPlayer > paredeX && playerX < paredeX + larguraParede) { /* colisao com o bloco*/
-					playerY = paredeY - alturaPlayer; /* Reposiciona o jogador para fora da parede por cima */
+					playerY = paredeY - alturaPlayer; /*recebe o Y da torre para nao cair */
 					maxAlt = 0;
 					noChao = 1;
 				}
 
-				/*No pulando tirei uma variavel que nn tava servindo pra nada e ele nao tava caindo depois de ficar no quadrado agora esta */
+				if (maxAlt >= 0 &&  playerY + alturaPlayer <= blocoY && playerX + larguraPlayer > blocoX && playerX < blocoX + largurabloco) {
+					playerY = blocoY - alturaPlayer;
+					maxAlt = 0;
+					noChao = 1;
+					if (playerY == 450) {
+						noChao = 1;
+						playerY = 450;
+					}
+				}
+					if (maxAlt >= 0 && playerY + alturaPlayer <= blocoY2 && playerX + larguraPlayer > blocoX2 && playerX < blocoX2 + largurabloco2) {
+						playerY = blocoY2 - alturaPlayer;
+						maxAlt = 0;
+						noChao = 1;
+						pulando = 0;
+
+						if (playerY == 450) {
+							noChao = 1;
+							playerY = 450;
+						}
+					}
+					/*e ele nao tava caindo depois de ficar no quadrado agora esta */
 			}
 		}
 
 
 
 		al_clear_to_color(al_map_rgb(30, 30, 30)); /* Limpa a cor da janela e, coloca outra no lugar */
-		al_draw_filled_rectangle( /* Desenha um retângulo/chão com os (x1,y1,x2,y2) e cor */
-			0,
-			500,
-			800,
-			600,
-			al_map_rgb(255, 100, 100)
+		al_draw_filled_rectangle(0,500,800,600, /*(x1, y1, x2, y2) */
+			al_map_rgb(255, 100, 100) /*cor do rectangle*/
 		);
 
 
@@ -190,6 +249,9 @@ int main()
 			al_map_rgb(100, 150, 255)
 		);
 
+		al_draw_filled_rectangle( blocoX,blocoY,blocoX + largurabloco,blocoY + alturabloco,       al_map_rgb(0, 255, 255) );
+
+		al_draw_filled_rectangle(blocoX2, blocoY2, blocoX2 + largurabloco2, blocoY2 + alturabloco2, al_map_rgb(255, 255, 0));
 
 
 		/* Desenha o jogador */
@@ -205,7 +267,7 @@ int main()
 		al_flip_display(); /* Atualiza a janela, altera de desenhando para visivel */
 	}
 
-	al_rest(7.0);   /* Espera 7 segundos para fechar a janela */
+
 	al_destroy_timer(timer);
 	al_destroy_event_queue(fila);
 	al_destroy_display(janela); /* Destroi a janela */
