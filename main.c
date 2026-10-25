@@ -156,11 +156,13 @@ int main()
 					playerX = paredeX + larguraParede; /* Reposiciona o jogador para fora da parede pela esquerda */
 				}
 
-					if (playerX < blocoX + largurabloco && playerX + larguraPlayer > blocoX && playerY < blocoY + alturabloco && playerY + alturaPlayer > paredeY) {
-						playerX = blocoX + largurabloco;
+					if ( playerY - alturaPlayer <= 110 && playerY - alturaPlayer >= 100 && playerX < blocoX + largurabloco && playerX + larguraPlayer > blocoX && playerY < blocoY + alturabloco && playerY + alturaPlayer > paredeY) {
+						maxAlt = 0;
+						noChao = 1;
 					}
-					if (playerX < blocoX2 + largurabloco2 && playerX + larguraPlayer > blocoX2 && playerY < blocoY2 + alturabloco && playerY + alturaPlayer > blocoY2) {
-						playerX = blocoX2 - largurabloco2;
+					if (playerY - alturaPlayer <= 110 && playerY - alturaPlayer >= 100 && playerX < blocoX2 + largurabloco2 && playerX + larguraPlayer > blocoX2 && playerY < blocoY2 + alturabloco && playerY + alturaPlayer > blocoY2) {
+						maxAlt = 0;
+						noChao = 1;
 					}
 			}
 
@@ -181,12 +183,14 @@ int main()
 					playerX = paredeX - larguraPlayer; /* Reposiciona o jogador para fora da parede pela direita */
 				}
 
-				if (playerX < blocoX + largurabloco && playerX + larguraPlayer > blocoX && playerY < blocoY + alturabloco && playerY + alturaPlayer > blocoY) {
-					playerX = blocoX - largurabloco;
+				if (maxAlt >= 0 && playerY - alturaPlayer <= 110 && playerY - alturaPlayer >= 100 && playerX < blocoX + largurabloco && playerX + larguraPlayer > blocoX && playerY < blocoY + alturabloco && playerY + alturaPlayer > blocoY) {
+					maxAlt = 0;
+					noChao = 1;
 				}
 
-				if (playerX < blocoX2 + largurabloco2 && playerX + larguraPlayer > blocoX2 && playerY < blocoY2 + alturabloco && playerY + alturaPlayer > blocoY2) {
-					playerX = blocoX2 - largurabloco2;
+				if (maxAlt >= 0 && playerY - alturaPlayer <= 110 && playerY - alturaPlayer >= 100 && playerX < blocoX2 + largurabloco2 && playerX + larguraPlayer > blocoX2 && playerY < blocoY2 + alturabloco && playerY + alturaPlayer > blocoY2) {
+					maxAlt = 0;
+					noChao = 1;
 				}
 
 			}
@@ -196,38 +200,27 @@ int main()
 				playerY += maxAlt;
 				maxAlt += 0.5;
 
-				/* Verifica colisão com a parede */
+				
 				if (playerY >= 450) {
 					playerY = 450;
 					maxAlt = 0;
 					noChao = 1;
 					
 				}
-				if (maxAlt > 0 && playerY + alturaPlayer >= paredeY && playerX + larguraPlayer > paredeX && playerX < paredeX + larguraParede) { /* colisao com o bloco*/
-					playerY = paredeY - alturaPlayer; /*recebe o Y da torre para nao cair */
+				if (maxAlt > 0 && playerY + alturaPlayer >= paredeY && playerX + larguraPlayer > paredeX && playerX < paredeX + larguraParede) {  
+					playerY = paredeY - alturaPlayer; 
 					maxAlt = 0;
 					noChao = 1;
 				}
 
-				if (maxAlt >= 0 &&  playerY + alturaPlayer <= blocoY && playerX + larguraPlayer > blocoX && playerX < blocoX + largurabloco) {
-					playerY = blocoY - alturaPlayer;
+				if (maxAlt >= 0 &&  playerY - alturaPlayer <= 110 && playerY - alturaPlayer >=100 && playerX + larguraPlayer > blocoX && playerX < blocoX + largurabloco) {
 					maxAlt = 0;
 					noChao = 1;
-					if (playerY == 450) {
-						noChao = 1;
-						playerY = 450;
-					}
+				
 				}
-					if (maxAlt >= 0 && playerY + alturaPlayer <= blocoY2 && playerX + larguraPlayer > blocoX2 && playerX < blocoX2 + largurabloco2) {
-						playerY = blocoY2 - alturaPlayer;
+					if (maxAlt >= 0 && playerY - alturaPlayer <= 110 && playerY - alturaPlayer >=100 && playerX + larguraPlayer > blocoX2 && playerX < blocoX2 + largurabloco2) {
 						maxAlt = 0;
 						noChao = 1;
-						pulando = 0;
-
-						if (playerY == 450) {
-							noChao = 1;
-							playerY = 450;
-						}
 					}
 					/*e ele nao tava caindo depois de ficar no quadrado agora esta */
 			}
