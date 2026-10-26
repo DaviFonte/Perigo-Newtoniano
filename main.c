@@ -50,7 +50,7 @@ int main()
 	/* bloco2 kk  */
 	float blocoX2 = 80;
 	float blocoY2 = 200;
-	float largurabloco2 = 90;
+	float largurabloco2 = 40;
 	float alturabloco2= 50;
 
 
@@ -183,12 +183,12 @@ int main()
 					playerX = paredeX - larguraPlayer; /* Reposiciona o jogador para fora da parede pela direita */
 				}
 
-				if (maxAlt >= 0 && playerY - alturaPlayer <= 110 && playerY - alturaPlayer >= 100 && playerX < blocoX + largurabloco && playerX + larguraPlayer > blocoX && playerY < blocoY + alturabloco && playerY + alturaPlayer > blocoY) {
+				if (playerY - alturaPlayer <= 110 && playerY - alturaPlayer >= 100 && playerX < blocoX + largurabloco && playerX + larguraPlayer > blocoX && playerY < blocoY + alturabloco && playerY + alturaPlayer > blocoY) {
 					maxAlt = 0;
 					noChao = 1;
 				}
 
-				if (maxAlt >= 0 && playerY - alturaPlayer <= 110 && playerY - alturaPlayer >= 100 && playerX < blocoX2 + largurabloco2 && playerX + larguraPlayer > blocoX2 && playerY < blocoY2 + alturabloco && playerY + alturaPlayer > blocoY2) {
+				if ( playerY - alturaPlayer <= 110 && playerY - alturaPlayer >= 100 && playerX < blocoX2 + largurabloco2 && playerX + larguraPlayer > blocoX2 && playerY < blocoY2 + alturabloco && playerY + alturaPlayer > blocoY2) {
 					maxAlt = 0;
 					noChao = 1;
 				}
