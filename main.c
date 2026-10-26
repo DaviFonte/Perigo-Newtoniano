@@ -207,18 +207,18 @@ int main()
 					noChao = 1;
 					
 				}
-				if (maxAlt > 0 && playerY + alturaPlayer >= paredeY && playerX + larguraPlayer > paredeX && playerX < paredeX + larguraParede) {  
+				if (playerY + alturaPlayer >= paredeY && playerX + larguraPlayer > paredeX && playerX < paredeX + larguraParede) {  
 					playerY = paredeY - alturaPlayer; 
 					maxAlt = 0;
 					noChao = 1;
 				}
 
-				if (maxAlt >= 0 &&  playerY - alturaPlayer <= 110 && playerY - alturaPlayer >=100 && playerX + larguraPlayer > blocoX && playerX < blocoX + largurabloco) {
+				if ( playerY - alturaPlayer <= 110 && playerY - alturaPlayer >=100 && playerX + larguraPlayer > blocoX && playerX < blocoX + largurabloco) {
 					maxAlt = 0;
 					noChao = 1;
 				
 				}
-					if (maxAlt >= 0 && playerY - alturaPlayer <= 110 && playerY - alturaPlayer >=100 && playerX + larguraPlayer > blocoX2 && playerX < blocoX2 + largurabloco2) {
+					if (playerY - alturaPlayer <= 110 && playerY - alturaPlayer >=100 && playerX + larguraPlayer > blocoX2 && playerX < blocoX2 + largurabloco2) {
 						maxAlt = 0;
 						noChao = 1;
 					}
