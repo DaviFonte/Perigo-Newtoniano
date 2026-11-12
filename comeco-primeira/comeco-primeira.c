@@ -42,7 +42,7 @@ int main()
 	fundo = al_load_bitmap("imagens/fundo.png");
 	chao = al_load_bitmap("imagens/chao.png");
 
-
+	
 	arvore = al_load_bitmap("imagens/arvore2.png");
 	arvore3 = al_load_bitmap("imagens/arvore3.png");
 	arvore4 = al_load_bitmap("imagens/arvore4.png");
@@ -64,6 +64,8 @@ int main()
 
 	/* ----- Criacoes ----- */
 
+	int fase1 = 0;
+
 	/* Variaveis do Jogador */
 	float playerX = 100;
 	float playerY = 620;    /* 785;*/
@@ -84,15 +86,14 @@ int main()
 	/*floats da primeira fase */
 	float larguraFase = 5000;
 	float cameraX = 0;
-	float fundoX = 0;
 	float chaoY = 595;
 
 	float meteoroX = 0;
 	float velocidadeMeteoro = 1;
 	float Xmeteoro = -900;
 	float meteoroY = -700;
-	float velocidadeMeteoroX = 2;
-	float velocidadeMeteoroY = 1;
+	float velocidadeMeteoroX = 5;
+	float velocidadeMeteoroY = 3;
 
 	int meteoroCaindo = 0;
 
@@ -100,7 +101,7 @@ int main()
 	float arvoreX1 = 700;
 	float arvoreX2 = 1800;
 	float arvoreX3 = 3200;
-	float arvoreX4 = 4700;
+	float arvoreX4 = 4300;
 	
 
 
@@ -286,13 +287,13 @@ int main()
 		}
 		/*---------------- DESENHA ARVORES PELO MAPA  ------------------*/
 		al_draw_scaled_bitmap(arvore, 0 /*inicio X da imagem*/, 0/*inicio Y da imagem*/, al_get_bitmap_width(arvore),al_get_bitmap_height(arvore),	
-			arvoreX1 - cameraX  /* X onde a arvore aparece na tela */ , 560 /* Y onde a arvore aparece na tela */ , 300/* largura que a arvore  */ , 300   /* altura */, 0);
+			arvoreX1 - cameraX  /* X onde a arvore aparece na tela */ , 240 /* Y onde a arvore aparece na tela */ , 800/* largura que a arvore  */ , 655   /* altura */, 0);
 
-		al_draw_scaled_bitmap(arvore3, 0 , 0, al_get_bitmap_width(arvore3),al_get_bitmap_height(arvore3),arvoreX2 - cameraX , 550, 300, 300, 0);
+		al_draw_scaled_bitmap(arvore3, 0 , 0, al_get_bitmap_width(arvore3),al_get_bitmap_height(arvore3),arvoreX2 - cameraX , 240, 800, 655, 0);
 
-		al_draw_scaled_bitmap(arvore4, 0,0, al_get_bitmap_width(arvore4),al_get_bitmap_height(arvore4),arvoreX3 - cameraX, 550, 300, 300, 0);
+		al_draw_scaled_bitmap(arvore4, 0,0, al_get_bitmap_width(arvore4),al_get_bitmap_height(arvore4),arvoreX3 - cameraX, 240, 800, 655, 0);
 
-		al_draw_scaled_bitmap(arvore5, 0 , 0, al_get_bitmap_width(arvore5),al_get_bitmap_height(arvore5),arvoreX4 - cameraX  , 560, 300 , 300, 0);
+		al_draw_scaled_bitmap(arvore5, 0 , 0, al_get_bitmap_width(arvore5),al_get_bitmap_height(arvore5),arvoreX4 - cameraX  , 240, 800 , 665, 0);
 
 		/*---------------- DESENHA ARVORES PELO MAPA  ------------------*/
 
@@ -345,5 +346,23 @@ int main()
 
 
 	return 0;
+
+
+
+	int fase2 = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
