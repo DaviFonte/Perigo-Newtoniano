@@ -45,7 +45,7 @@ int main()
 	fundo = al_load_bitmap("imagens/fundo.png");
 	chao = al_load_bitmap("imagens/chao.png");
 
-
+	
 	arvore = al_load_bitmap("imagens/arvore2.png");
 	arvore3 = al_load_bitmap("imagens/arvore3.png");
 	arvore4 = al_load_bitmap("imagens/arvore4.png");
@@ -64,10 +64,16 @@ int main()
 
 
 	/* ----- Criacoes ----- */
+<<<<<<< HEAD
 	int fase2 = 0;
 	int fase1 = 1;
 	int passou = 0;
 	float cor = 0;
+=======
+
+	int fase1 = 0;
+
+>>>>>>> 83a90952efda326a5631cc76e189ea94e16b3bb7
 	/* Variaveis do Jogador */
 	float playerX = 100;
 	float playerY = 620; 
@@ -94,10 +100,16 @@ int main()
 	float velocidadeMeteoro = 1;
 	float Xmeteoro = -900;
 	float meteoroY = -700;
+<<<<<<< HEAD
 	float velocidadeMeteoroX = 3;
 	float velocidadeMeteoroY = 2;
 	float Xblibioteca = 850;
 	float Yblibioteca = 750;
+=======
+	float velocidadeMeteoroX = 5;
+	float velocidadeMeteoroY = 3;
+
+>>>>>>> 83a90952efda326a5631cc76e189ea94e16b3bb7
 	int meteoroCaindo = 0;
 
 
@@ -105,6 +117,10 @@ int main()
 	float arvoreX2 = 1800;
 	float arvoreX3 = 3200;
 	float arvoreX4 = 4300;
+<<<<<<< HEAD
+=======
+	
+>>>>>>> 83a90952efda326a5631cc76e189ea94e16b3bb7
 
 
 
@@ -341,6 +357,7 @@ int main()
 		if (meteoroCaindo == 1 || meteoroCaindo == 2){
 			al_draw_scaled_bitmap(meteoro_medio, 0, 0, al_get_bitmap_width(meteoro_medio), al_get_bitmap_height(meteoro_medio), Xmeteoro + 720, meteoroY + 400, 300, 150, 0);
 		}
+<<<<<<< HEAD
 		/*---------------- DESENHA ARVORES PELO MAPA  ------------------*/
 		
 		if (fase1 == 1) {
@@ -351,6 +368,17 @@ int main()
 		al_draw_scaled_bitmap(arvore3, 0, 0, al_get_bitmap_width(arvore3), al_get_bitmap_height(arvore3), arvoreX2 - cameraX, 240, 800, 655, 0);
 
 		al_draw_scaled_bitmap(arvore4, 0, 0, al_get_bitmap_width(arvore4), al_get_bitmap_height(arvore4), arvoreX3 - cameraX, 240, 800, 655, 0);
+=======
+		/*---------------- DESENHA ARVORES PELO MAPA  ------------------*/
+		al_draw_scaled_bitmap(arvore, 0 /*inicio X da imagem*/, 0/*inicio Y da imagem*/, al_get_bitmap_width(arvore),al_get_bitmap_height(arvore),	
+			arvoreX1 - cameraX  /* X onde a arvore aparece na tela */ , 240 /* Y onde a arvore aparece na tela */ , 800/* largura que a arvore  */ , 655   /* altura */, 0);
+
+		al_draw_scaled_bitmap(arvore3, 0 , 0, al_get_bitmap_width(arvore3),al_get_bitmap_height(arvore3),arvoreX2 - cameraX , 240, 800, 655, 0);
+
+		al_draw_scaled_bitmap(arvore4, 0,0, al_get_bitmap_width(arvore4),al_get_bitmap_height(arvore4),arvoreX3 - cameraX, 240, 800, 655, 0);
+
+		al_draw_scaled_bitmap(arvore5, 0 , 0, al_get_bitmap_width(arvore5),al_get_bitmap_height(arvore5),arvoreX4 - cameraX  , 240, 800 , 665, 0);
+>>>>>>> 83a90952efda326a5631cc76e189ea94e16b3bb7
 
 		al_draw_scaled_bitmap(arvore5, 0, 0, al_get_bitmap_width(arvore5), al_get_bitmap_height(arvore5), arvoreX4 - cameraX, 240, 800, 665, 0);
 
@@ -421,5 +449,23 @@ int main()
 
 
 	return 0;
+
+
+
+	int fase2 = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
