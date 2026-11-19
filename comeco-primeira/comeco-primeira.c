@@ -24,7 +24,7 @@ int main()
 
 
 	ALLEGRO_BITMAP* fundo;
-	ALLEGRO_BITMAP* chao;
+	ALLEGRO_BITMAP* chao;	
 	ALLEGRO_BITMAP* arvore;
 	ALLEGRO_BITMAP* arvore3;
 	ALLEGRO_BITMAP* arvore4;
@@ -44,7 +44,7 @@ int main()
 	personagem_parado = al_load_bitmap("imagens/personagem.png");
 	fundo = al_load_bitmap("imagens/fundo.png");
 	chao = al_load_bitmap("imagens/chao.png");
-
+		
 	
 	arvore = al_load_bitmap("imagens/arvore2.png");
 	arvore3 = al_load_bitmap("imagens/arvore3.png");
@@ -116,6 +116,11 @@ int main()
 	float arvoreX4 = 4300;
 
 
+	float tiroX = 0;
+	float tiroY = 0;
+	int tiroAtivo = 0;
+	int velocidadeTiro = 10;
+
 
 
 	ALLEGRO_TIMER* timer;
@@ -181,6 +186,16 @@ int main()
 			if (evento.keyboard.keycode == ALLEGRO_KEY_ESCAPE) { /* finaliza o while */
 				rodando = 0;
 			}
+
+
+			if (evento.keyboard.keycode == ALLEGRO_KEY_F) {
+			if (tiroAtivo == 0) {
+					tiroX = playerX + 200;
+					tiroY = playerY + 100;
+					tiroAtivo = 1;
+				}
+			}
+
 		}
 
 		if (evento.type == ALLEGRO_EVENT_KEY_UP)
@@ -191,11 +206,13 @@ int main()
 			if (evento.keyboard.keycode == ALLEGRO_KEY_D) {
 				direita = 0;
 			}
-			if (evento.keyboard.keycode == ALLEGRO_KEY_SPACE) {
+			if (evento.keyboard.keycode == ALLEGRO_KEY_SPACE) {	
 				playerY += maxAlt;
 				maxAlt += 5;
 				noChao = 0;
-			}
+			
+
+		}
 			if (evento.keyboard.keycode == ALLEGRO_KEY_LSHIFT) {/*ta muito rapido so pra testar melhor!*/
 				shift = 0;
 			}
@@ -205,6 +222,13 @@ int main()
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
 		
+			if (tiroAtivo ==  1) {
+				tiroX += velocidadeTiro;
+				}
+				if (tiroX >=  500 ) {
+					tiroAtivo == 0;
+			}
+
 				if (passou == 1){
 					cor += 5;
 
@@ -334,7 +358,7 @@ int main()
 		}
 		/*---------------- DESENHA FUNDO CHAO E O JOGADOR ------------------*/
 		al_clear_to_color(al_map_rgb(30, 30, 30)); /* Limpa a cor da janela e, coloca outra no lugar */
-		if (fase1 == 1) {
+			if (fase1 == 1) {
 		al_draw_scaled_bitmap(fundo, 0 /*inicio X da imagem*/, 0 /*inicio Y da imagem*/, al_get_bitmap_width(fundo), al_get_bitmap_height(fundo),
 			0 - cameraX /*X comeca do 0 */, 0 /*Y comeca do 0*/, 5000, 825, 0 /* 0 diz que a imgagem nao precisa ser invertida */);
 		}
@@ -361,6 +385,9 @@ int main()
 		}
 		
 
+		if (tiroAtivo == 1){
+			al_draw_filled_circle(tiroX, tiroY, 20 , al_map_rgb(255, 255, 255));
+				}
 		al_draw_scaled_bitmap(personagem_parado, 0, 0, al_get_bitmap_width(personagem_parado), al_get_bitmap_height(personagem_parado), playerX - cameraX, playerY, larguraPlayer, alturaPlayer, 0);
 		/*jogador */
 
@@ -436,4 +463,4 @@ int main()
 
 
 
-}
+}s
