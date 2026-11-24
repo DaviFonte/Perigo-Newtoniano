@@ -94,11 +94,33 @@ int main()
 
 
 
+	/* bloco2 kk  */
+	float blocoX2 = 1250;
+	float blocoY2 = 300;
+	float largurabloco2 = 140;
+	float alturabloco2 = 50;
+
+	/* bloco  */
+	float blocoX = 1800;
+	float blocoY = 300;
+	float largurabloco = 140;
+	float alturabloco = 50;
 
 
+	/* Variaveis da parede */
+	float paredeX = 2130;
+	float paredeY = 735;
+	float larguraParede = 160;
+	float alturaParede = 150;
 
 
+	/* bloco3   */
+	float blocoX3 = 2350;
+	float blocoY3 = 500;
+	float largurabloco3 = 280;
+	float alturabloco3 = 50;
 
+	 
 
 	/* ----- Variaveis da fase ----- */
 	int fase1 = 1;
@@ -355,7 +377,7 @@ int main()
 			
 
 
-			if (fase1 == 1) {
+			if (fase1 == 1 || fase3 == 1) {
 			 if (evento.keyboard.keycode == ALLEGRO_KEY_LSHIFT) {
 			   shift = 1;
 			 }
@@ -567,9 +589,12 @@ int main()
 			}
 
 
-			if (esperandoPulo == 1) {
+			if (esperandoPulo == 1 && fase3 == 1) {
 				if (al_get_time() - momentoDoTiro >= 2.0) {
 
+					tiroX += 0;
+					al_draw_filled_circle(tiroX - cameraX, tiroY, 20, al_map_rgb(255, 255, 255));
+				
 
 					if (noChao == 1) {
 						pulando = 1;
@@ -732,9 +757,9 @@ int main()
 			if (direita) {
 				/*---------------- PERSONAGEM ANDAR PARA DIREITA ------------------*/
 				if (empurrao == 0) {
-				playerX += 5;
+					playerX += 5;
 				}
-				
+
 
 				/* Empurrao */
 				playerX += empurrao;
@@ -757,17 +782,17 @@ int main()
 
 				/* CORRE */
 				if (shift == 1) {
-					playerX += 10;
+					/*playerX += 10;*/
+					playerX += 60;
 				}/* CORRE */
 
 
-					if (playerX <= 0 - 80) {
-						playerX = 0 - 80;
-					}
+				if (playerX <= 0 - 80) {
+					playerX = 0 - 80;
+				}
 
-
+			
 				/*---------------- PERSONAGEM ANDAR PARA DIREITA ------------------*/
-
 
 
 
@@ -801,9 +826,28 @@ int main()
 					noChao = 1;
 					pulando = 0;
 				}
+				float pePlayer = playerY + alturaPlayer - 30;
 
+				if (playerY + alturaPlayer >= 780 && playerX + larguraPlayer > paredeX && playerX < paredeX + larguraParede - 80) {
+					maxAlt = 0;
+					noChao = 1;
+				}
+
+				if (pePlayer >= blocoY && pePlayer <= blocoY && playerX + larguraPlayer > blocoX && playerX < blocoX + largurabloco - 30) {
+					maxAlt = 0;
+					noChao = 1;
+				}
+					
+				if (pePlayer >= blocoY && pePlayer <= blocoY && playerX + larguraPlayer > blocoX2 && playerX < blocoX2 + largurabloco2 - 30) {
+					maxAlt = 0;
+					noChao = 1;
+				}
+
+				if (playerY - alturaPlayer <= 65 && playerY - alturaPlayer > 55 && playerX + larguraPlayer > blocoX3 && playerX < blocoX3 + largurabloco3) {
+					maxAlt = 0;
+					noChao = 1;
+				}
 			}
-
 
 
 
@@ -893,13 +937,12 @@ int main()
 				1250 - cameraX/* X onde a  objeto pareacrece na tela */, 300 /* Y onde a objeto aparece na tela */, 150/* largura que a objeto  */, 50 /* altura */, 0);
 
 			al_draw_scaled_bitmap(apoio2, 0 /*inicio X da imagem*/, 0/*inicio Y da imagem*/, al_get_bitmap_width(apoio2), al_get_bitmap_height(apoio2),
-				1800 - cameraX/* X onde a  objeto aparece na tela */, 600 /* Y onde a arvore aparece na tela */, 300/* largura que a objeto  */, 300 /* altura */, 0);
+				2100 - cameraX/* X onde a  objeto aparece na tela */, 700 /* Y onde a arvore aparece na tela */, 200/* largura que a objeto  */, 200 /* altura */, 0);
 
 			al_draw_scaled_bitmap(apoio3, 0 /*inicio X da imagem*/, 0/*inicio Y da imagem*/, al_get_bitmap_width(apoio3), al_get_bitmap_height(apoio3),
 				2300 - cameraX/* X onde a  objeto aparece na tela */, 435 /* Y onde a objeto aparece na tela */, 300 /* largura que a objeto  */, 500 /* altura */, 0);
 			/* ------------- objetos escalada terceira fase --------------------*/
-
-
+			
 		}
 		/*---------------- DESENHA ARVORES PELO MAPA E O CHAO  ------------------*/
 		if (fase1 == 1) {
@@ -920,6 +963,38 @@ int main()
 		}
 		/*---------------- DESENHA ARVORES PELO MAPA E O CHAO  ------------------*/
 
+
+
+
+
+
+
+
+
+
+
+		if (fase3 == 1) {
+		al_draw_filled_rectangle(blocoX -cameraX, blocoY, blocoX - cameraX + largurabloco, blocoY + alturabloco, al_map_rgba(255, 0, 0, 0));
+
+		al_draw_filled_rectangle(blocoX2 -cameraX, blocoY2, blocoX2 - cameraX + largurabloco2, blocoY2 + alturabloco2, al_map_rgba(255, 0, 0, 0));
+
+		al_draw_filled_rectangle(blocoX3 - cameraX, blocoY3, blocoX3 - cameraX + largurabloco3, blocoY3 + alturabloco3, al_map_rgba(255, 0, 0, 0));
+
+		al_draw_filled_rectangle(paredeX - cameraX, paredeY, paredeX - cameraX + larguraParede, paredeY + alturaParede, al_map_rgba(255, 0, 0, 0));
+		}
+			
+		
+
+
+
+
+
+
+
+
+
+
+
 		if (telaMorte == 1) {
 			al_draw_scaled_bitmap(morte, 0 /*inicio X da imagem*/, 0 /*inicio Y da imagem*/, al_get_bitmap_width(morte), al_get_bitmap_height(morte),
 				0 - cameraX /*X comeca do 0 */, 0 /*Y comeca do 0*/, 1671, 941, 0 /* 0 diz que a imgagem nao precisa ser invertida */);
@@ -927,6 +1002,16 @@ int main()
 
 
 				
+
+
+
+
+
+
+
+
+
+
 		
 		
 			/*---------------- DESENHA O TIRO   ------------------*/
@@ -937,9 +1022,7 @@ int main()
 					}
 					al_draw_filled_circle(tiroX - cameraX, tiroY, 20, al_map_rgb(255, 255, 255));
 				}
-				if (tiroAtivo == 1 && blibioteca == 1) {
-					al_draw_filled_circle(tiroX - cameraX, tiroY, 20, al_map_rgb(255, 255, 255));
-				}
+
 					
 			/*---------------- DESENHA O TIRO   ------------------*/
 
@@ -1085,7 +1168,6 @@ int main()
 		al_destroy_bitmap(apoio1);
 		al_destroy_bitmap(apoio2);
 		al_destroy_bitmap(apoio3);
-
 
 
 		al_destroy_timer(timer);
