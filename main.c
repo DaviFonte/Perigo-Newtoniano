@@ -48,7 +48,7 @@ int main()
 	ALLEGRO_BITMAP* coracao1;
 	ALLEGRO_BITMAP* coracao2;
 	ALLEGRO_BITMAP* coracao3;
-
+	ALLEGRO_BITMAP* morte;
 
 
 	apoio1 = al_load_bitmap("imagens/apoio.png");
@@ -56,9 +56,10 @@ int main()
 	apoio3 = al_load_bitmap("imagens/madeira.png");
 
 
-	blibioteca = al_load_bitmap("imagens/blibio.png");
 	fundo2 = al_load_bitmap("imagens/fundo-fase2.png");
 	fundo = al_load_bitmap("imagens/fundo.png");
+	blibioteca = al_load_bitmap("imagens/blibio.png");
+	morte = al_load_bitmap("imagens/morte.png");
 	chao2 = al_load_bitmap("imagens/chao.png");
 	chao = al_load_bitmap("imagens/chao.png");
 
@@ -101,6 +102,8 @@ int main()
 
 	/* ----- Variaveis da fase ----- */
 	int fase1 = 1;
+	int fase2 = 0;
+	int telaMorte = 0;
 	float arvoreX1 = 1500;
 	float arvoreX3 = 3200;
 	float arvoreX4 = 3500;
@@ -115,7 +118,6 @@ int main()
 
 
 
-	int fase2 = 0;
 	float Xblibioteca = 850;
 	float Yblibioteca = 750;
 
@@ -222,7 +224,7 @@ int main()
 	float tiroX = 0;
 	float tiroY = 0;
 	int tiroAtivo = 0;
-	int velocidadeTiro = 10;
+	int velocidadeTiro = 5;
 	int direcaoTiro = 1; /* 1 = direita, 2 = esquerda, -1 = baixo */
 
 	/* ----------------------------------*/
@@ -300,41 +302,57 @@ int main()
 
 
 			if (evento.keyboard.keycode == ALLEGRO_KEY_F) {
-				if (fase1 == 1) {
-					tiroAtivo = 1;
-					if (direita) {
-						empurrao = -25;
-					}
-					else {
-						empurrao = 25;
-					}
+				tiroAtivo = 1;
+				/*empurrar pensonagem ao atirar*/
+				if (fase1 == 1 || fase2 == 2) {
 
-					tiroY = playerY + 100;
+				empurrao = -35;
 
-					if (esquerda) {
-						tiroX = playerX;
-						direcaoTiro = 1;
-					}
-					else {
-						tiroX = playerX + larguraPlayer;
-						direcaoTiro = 2;
+				if (!direita && !esquerda) {
+					empurrao = -100;
+					playerX += empurrao;
+					empurrao += 0.5;
+					empurrao = 0;
+					if (playerX <= 0) {
+						playerX = 0 - 80;
 					}
 				}
-				if (fase3 == 1 && segurando == 1 && noChao == 1 && esperandoPulo == 0) {
-					tiroAtivo = 1;
-					tiroX = playerX + larguraPlayer / 2;
-					tiroY = playerY + alturaPlayer - 30;
-					direcaoTiro = -1;
 
-					/* marca o momento do tiro mas ainda nao pula */
-					momentoDoTiro = al_get_time();
-					esperandoPulo = 1;
+				if (esquerda) {
+					empurrao = 35;
+					}
 				}
+
+				tiroY = playerY + 100;
+				/*empurrar pensonagem ao atirar*/
+
+				if (esquerda) {
+					tiroX = playerX;
+					direcaoTiro = 1;
+				}
+				else {
+					tiroX = playerX + larguraPlayer;
+					direcaoTiro = 2;
+				}
+			if (fase3 == 1 && segurando == 1 && noChao == 1 && esperandoPulo == 0) {
+				tiroAtivo = 1;
+				tiroX = playerX + larguraPlayer / 2;
+				tiroY = playerY + alturaPlayer - 30;
+				direcaoTiro = -1;
+
+				/* marca o momento do tiro mas ainda nao pula */
+				momentoDoTiro = al_get_time();
+				esperandoPulo = 1;
 			}
+			}
+		
+			
 
 
-			if (evento.keyboard.keycode == ALLEGRO_KEY_LSHIFT) {
-				shift = 1;
+			if (fase1 == 1) {
+			 if (evento.keyboard.keycode == ALLEGRO_KEY_LSHIFT) {
+			   shift = 1;
+			 }
 			}
 
 
@@ -457,7 +475,11 @@ int main()
 					ultimoDano = al_get_time();
 
 					if (vidas <= 0) {
-						rodando = 0;
+						telaMorte = 1;
+						fase1 = 0;
+						blibioteca = 0;
+						fase2 = 0;
+
 					}
 				}
 			}
@@ -510,9 +532,9 @@ int main()
 				}
 			}/*------- DIRECAO DO TIRO ------*/
 
-
+/*------------------------ colisao tiro com inimigo ------------------------------ */
 			if (fase1 == 1 && tiroAtivo == 1) {
-				if (tiroX + 20 >= inimigoX && tiroX - 20 <= inimigoX + larguraInimigo && tiroY + 20 >= inimigoY && tiroY - 20 <= inimigoY + alturaInimigo) {
+				if (inimigo1Ativo == 1 && tiroX + 20 >= inimigoX && tiroX - 20 <= inimigoX + larguraInimigo && tiroY + 20 >= inimigoY && tiroY - 20 <= inimigoY + alturaInimigo) {
 					inimigo1Ativo = 0;
 					tiroAtivo = 0;
 				}
@@ -531,7 +553,7 @@ int main()
 				}
 			}
 
-
+/*------------------------ colisao tiro com inimigo ------------------------------ */
 
 			/*--- SE SAIR DA TELA PARA ----- DELAY PARA PULO ---*/
 			if (tiroX - cameraX > 1500 || tiroX - cameraX < 0 || tiroY > 980) {
@@ -597,18 +619,13 @@ int main()
 					fase2++;
 
 					if (fase2 == 1) {
-						al_destroy_bitmap(fundo);
-
-
-						fundo = fundo2;
-						fundo2 = NULL;
-
-
 						fase1 = 0;
-						playerX = 10;
-						playerY = 620;
-						cameraX = 0;
 						fase2 = 2;
+
+
+						cameraX = 0;
+						playerY = 620;
+						playerX = 10;
 					}
 
 
@@ -630,18 +647,14 @@ int main()
 				cor += 5;
 				if (cor >= 255) {
 					cor = 255;
-
-					al_destroy_bitmap(fundo);
-
-					fundo = blibioteca;
-					blibioteca = NULL;
-
+					
 					fase2 = 0;
-					playerX = 10;
-					playerY = 670;
+					
 					cameraX = 0;
 					passou = 4;
 					fase3 = 1;
+					playerX = 10;
+					playerY = 670;
 				}
 			}
 
@@ -668,7 +681,10 @@ int main()
 
 				playerX += empurrao;
 				empurrao -= 0.5;
-
+				if (empurrao == 0) {
+					empurrao = 0;
+				}
+				
 				/* CORRE */
 				if (shift == 1) {
 					playerX -= 15;
@@ -693,17 +709,22 @@ int main()
 			if (direita) {
 				/*---------------- PERSONAGEM ANDAR PARA DIREITA ------------------*/
 				playerX += 5;
-
+				
 				playerX += empurrao;
 				empurrao += 0.5;
-
+				if (empurrao == 0) {
+				empurrao = 0;
+				}
 
 				/* CORRE */
 				if (shift == 1) {
 					playerX += 10;
-
-
 				}/* CORRE */
+
+
+					if (playerX <= 0 - 80) {
+						playerX = 0 - 80;
+					}
 
 
 				/*---------------- PERSONAGEM ANDAR PARA DIREITA ------------------*/
@@ -790,17 +811,17 @@ int main()
 				0 - cameraX /*X comeca do 0 */, 0 /*Y comeca do 0*/, 5000, 845, 0 /* 0 diz que a imgagem nao precisa ser invertida */);
 		}
 		if (fase2 == 2) {
-			al_draw_bitmap(fundo, -cameraX, -80, 0);
+			al_draw_bitmap(fundo2, -cameraX, -80, 0);
 		}
 		if (fase3 == 1) {
-			al_draw_scaled_bitmap(fundo, 0 /*inicio X da imagem*/, 0 /*inicio Y da imagem*/, al_get_bitmap_width(fundo), al_get_bitmap_height(fundo),
+			al_draw_scaled_bitmap(blibioteca, 0 /*inicio X da imagem*/, 0 /*inicio Y da imagem*/, al_get_bitmap_width(blibioteca), al_get_bitmap_height(blibioteca),
 				0 - cameraX /*X comeca do 0 */, 0 /*Y comeca do 0*/, 2600, 1024, 0 /* 0 diz que a imgagem nao precisa ser invertida */);
 		}
 		/*---------------- DESENHA FUNDO CHAO ------------------*/
 
 
 
-		/*---------- CORACAO  -----------*/
+		/*---------- CORACAO E DEIXA A TELA VERMELHA AO TOMAR DANO -----------*/
 		if (fase1 == 1) {
 
 			if (vidas == 3) {
@@ -814,6 +835,13 @@ int main()
 				al_draw_scaled_bitmap(coracao2, 0, 0, al_get_bitmap_width(coracao2), al_get_bitmap_height(coracao2), 180, 20, 100, 70, 0);
 			}
 		}
+	
+		al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
+		if (REDdano >= 0 && fase1 == 1 && menosUM == 1 || menosUM == 2 || menosUM == 3) {
+			REDdano += -0.01;
+			al_draw_filled_rectangle(0, 0, 1500, 980, al_map_rgba(255, 0, 0, REDdano));
+		}
+				
 		/*---------- CORACAO  -----------*/
 
 
@@ -849,28 +877,28 @@ int main()
 			al_draw_scaled_bitmap(chao, 0, 0, al_get_bitmap_width(chao), al_get_bitmap_height(chao), -cameraX, chaoY, larguraFase, 980 - chaoY, 0);
 		}
 		if (fase2 == 2) {
-			al_draw_scaled_bitmap(chao2, 50, 0, al_get_bitmap_width(chao), 400, -cameraX, chaoY, larguraFase, 1010 - chaoY, 0);
+			al_draw_scaled_bitmap(chao2, 50, 0, al_get_bitmap_width(chao), 130, -cameraX, chaoY, larguraFase, 980 - chaoY, 0);
 		}
 		/*---------------- DESENHA ARVORES PELO MAPA E O CHAO  ------------------*/
 
-
-
-		al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
-		if (REDdano >=0 && fase1 == 1 && menosUM == 1 || menosUM == 2 || menosUM == 3) {
-				REDdano += -0.01;
-				al_draw_filled_rectangle(0, 0,1500, 980,al_map_rgba(255, 0, 0, REDdano));
-				
+		if (telaMorte == 1) {
+			al_draw_scaled_bitmap(morte, 0 /*inicio X da imagem*/, 0 /*inicio Y da imagem*/, al_get_bitmap_width(morte), al_get_bitmap_height(morte),
+				0 - cameraX /*X comeca do 0 */, 0 /*Y comeca do 0*/, 1671, 941, 0 /* 0 diz que a imgagem nao precisa ser invertida */);
 		}
 
 
 				
 		
 		
-		
+			/*---------------- DESENHA O TIRO   ------------------*/
 				if (tiroAtivo == 1 && fase1 == 1) {
+					tiroY += 3;
+					if (tiroY >= 835) {
+						tiroAtivo = 0;
+					}
 					al_draw_filled_circle(tiroX - cameraX, tiroY, 20, al_map_rgb(255, 255, 255));
 				}
-			
+			/*---------------- DESENHA O TIRO   ------------------*/
 
 
 
@@ -926,7 +954,7 @@ int main()
 			/* HIT BOX INIMIGO */
 
 
-	/*---------- INIMIGOS MORRENDO -----------*/
+	/*---------- DESENHANDO INIMIGOS -----------*/
 			if (fase1 == 1) {
 
 				if (inimigo1Ativo == 1) {
@@ -965,7 +993,7 @@ int main()
 					al_draw_scaled_bitmap(inimigo, origemInimigoX, 0, larguraQuadroInimigo, alturaTotalInimigo, inimigoX4 - cameraX, inimigoY, larguraInimigo, alturaInimigo, flip3);
 				}			
 			}
-			/*---------- INIMIGOS MORRENDO -----------*/
+			/*---------- DESENHANDO INIMIGOS -----------*/
 
 
 
@@ -979,9 +1007,9 @@ int main()
 			}
 			/*PARA A TELA ESCURECER NA TRANSICAO*/
 
-
-
-
+			if (telaMorte == 1) {
+			al_draw_filled_rectangle(500, 750, 1150, 900 , al_map_rgba(255, 0, 0, 255));
+			}
 
 
 			al_flip_display(); /* Atualiza a janela, altera de desenhando para visivel */
@@ -996,6 +1024,8 @@ int main()
 		al_destroy_bitmap(fundo);
 		al_destroy_bitmap(fundo2);
 		al_destroy_bitmap(blibioteca);
+		al_destroy_bitmap(morte);
+		
 		al_destroy_bitmap(coracao1);
 		al_destroy_bitmap(coracao2);
 		al_destroy_bitmap(coracao3);
