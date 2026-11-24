@@ -303,16 +303,18 @@ int main()
 
 			if (evento.keyboard.keycode == ALLEGRO_KEY_F) {
 				tiroAtivo = 1;
-				/*empurrar pensonagem ao atirar*/
-				if (fase1 == 1 || fase2 == 2) {
 
+				/*empurrar pensonagem ao atirar*/
+
+				if (fase1 == 1 || fase2 == 2) {
 				empurrao = -35;
 
 				if (!direita && !esquerda) {
-					empurrao = -100;
+					empurrao = -200;
 					playerX += empurrao;
 					empurrao += 0.5;
 					empurrao = 0;
+
 					if (playerX <= 0) {
 						playerX = 0 - 80;
 					}
@@ -326,6 +328,8 @@ int main()
 				tiroY = playerY + 100;
 				/*empurrar pensonagem ao atirar*/
 
+
+				/*fala pra que lado o personagem ta olhjabndo*/
 				if (esquerda) {
 					tiroX = playerX;
 					direcaoTiro = 1;
@@ -339,6 +343,8 @@ int main()
 				tiroX = playerX + larguraPlayer / 2;
 				tiroY = playerY + alturaPlayer - 30;
 				direcaoTiro = -1;
+				/*fala pra que lado o personagem ta olhjabndo*/
+
 
 				/* marca o momento do tiro mas ainda nao pula */
 				momentoDoTiro = al_get_time();
@@ -678,12 +684,30 @@ int main()
 
 			/*---------------- PERSONAGEM ANDAR PARA ESQUERDA  ------------------*/
 			if (esquerda) {
-
-				playerX += empurrao;
-				empurrao -= 0.5;
 				if (empurrao == 0) {
-					empurrao = 0;
+					playerX -= 5;
 				}
+
+
+				// Aplica o impulso
+				playerX += empurrao;
+
+				/* Empurrao */
+				if (empurrao >= 0) {
+					empurrao -= 0.5;
+
+					if (empurrao <= 0) {
+						empurrao = 0;
+					}
+				}
+				if (empurrao <= 0) {
+					empurrao += 0.5;
+
+					if (empurrao >= 0) {
+						empurrao = 0;
+					}
+				}
+				/* Empurrao */
 				
 				/* CORRE */
 				if (shift == 1) {
@@ -691,7 +715,6 @@ int main()
 				}/* CORRE */
 
 
-				playerX -= 5;
 
 
 				/* LIMITE FASE */
@@ -708,13 +731,29 @@ int main()
 
 			if (direita) {
 				/*---------------- PERSONAGEM ANDAR PARA DIREITA ------------------*/
-				playerX += 5;
-				
-				playerX += empurrao;
-				empurrao += 0.5;
 				if (empurrao == 0) {
-				empurrao = 0;
+				playerX += 5;
 				}
+				
+
+				/* Empurrao */
+				playerX += empurrao;
+				if (empurrao >= 0) {
+					empurrao -= 0.5;
+
+					if (empurrao <= 0) {
+						empurrao = 0;
+					}
+				}
+				if (empurrao <= 0) {
+					empurrao += 0.5;
+
+					if (empurrao >= 0) {
+						empurrao = 0;
+					}
+				}
+				/* Empurrao */
+
 
 				/* CORRE */
 				if (shift == 1) {
@@ -891,13 +930,17 @@ int main()
 		
 		
 			/*---------------- DESENHA O TIRO   ------------------*/
-				if (tiroAtivo == 1 && fase1 == 1) {
+				if (tiroAtivo == 1 && fase1 == 1 || fase2 == 2) {
 					tiroY += 3;
 					if (tiroY >= 835) {
 						tiroAtivo = 0;
 					}
 					al_draw_filled_circle(tiroX - cameraX, tiroY, 20, al_map_rgb(255, 255, 255));
 				}
+				if (tiroAtivo == 1 && blibioteca == 1) {
+					al_draw_filled_circle(tiroX - cameraX, tiroY, 20, al_map_rgb(255, 255, 255));
+				}
+					
 			/*---------------- DESENHA O TIRO   ------------------*/
 
 
