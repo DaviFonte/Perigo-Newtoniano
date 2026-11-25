@@ -53,6 +53,9 @@ int main()
 	ALLEGRO_BITMAP* mirando;
 	ALLEGRO_BITMAP* maca;
 	ALLEGRO_BITMAP* final;
+	ALLEGRO_BITMAP* cut;
+	ALLEGRO_BITMAP* scene;
+
 
 
 	apoio1 = al_load_bitmap("imagens/apoio.png");
@@ -65,6 +68,8 @@ int main()
 	blibioteca = al_load_bitmap("imagens/blibio.png");
 	final = al_load_bitmap("imagens/final.png");
 	morte = al_load_bitmap("imagens/morte.png");
+	cut = al_load_bitmap("imagens/cut.png");
+	scene = al_load_bitmap("imagens/scene.png");
 	chao2 = al_load_bitmap("imagens/chao.png");
 	chao = al_load_bitmap("imagens/chao.png");
 
@@ -85,7 +90,7 @@ int main()
 	arvore5 = al_load_bitmap("imagens/arvore5.png");
 
 
-	if (!chao || !arvore || !arvore4 || !arvore5 || !fundo || !fundo2 || !chao2 || !personagem || !inimigo || !coracao1|| !coracao2 || !coracao3 || !inicio || !mirando || !maca) {
+	if (!chao || !arvore || !arvore4 || !arvore5 || !fundo || !fundo2 || !chao2 || !personagem || !inimigo || !coracao1|| !coracao2 || !coracao3 || !inicio || !mirando || !maca ||!cut || !scene) {
 		return -1;
 	}
 
@@ -844,6 +849,13 @@ int main()
 					playerX = 0 - 80;
 				}
 			}
+			if (fase4 == 1) {
+			if (playerX + larguraPlayer <=  blocoX8 + largurabloco8 + 100 && playerX + larguraPlayer >= blocoX8 + largurabloco8 - 250 && playerY >= alturabloco8 + 100) {
+				playerX = blocoX8 + largurabloco8 - 80 ;
+			}
+			else { playerX = playerX; }
+		}
+			
 
 				/* LIMITE FASE */
 
@@ -884,12 +896,14 @@ int main()
 						playerX += 10;
 					}/* CORRE */
 
-
-					if (playerX <= 0 - 80) {
-						playerX = 0 - 80;
+					if (fase4 == 1) {
+					if (playerX + larguraPlayer >= blocoX8 + 100 && playerX + larguraPlayer <= blocoX8 + 150 && playerY >= alturabloco8 + 100) {
+						playerX = blocoX8 - larguraPlayer + 90;
 					}
-
-	
+					if (playerX + larguraPlayer >= blocoX7 + 100 && playerX + larguraPlayer <= blocoX7 + 150 && playerY >= alturabloco7 ) {
+						playerX = blocoX7 - larguraPlayer + 90;
+					}
+				}
 
 					/*---------------- PERSONAGEM ANDAR PARA DIREITA ------------------*/
 
@@ -974,12 +988,12 @@ int main()
 						maxAlt = 0;
 						noChao = 1;
 					}
-					if (playerY + alturaPlayer >= 620 && playerX + larguraPlayer > blocoX7 && blocoX7 < blocoX7 + largurabloco7) {
+					if (playerY + alturaPlayer >= 620 && pePlayer <= blocoY7 + 10 && playerX + larguraPlayer > blocoX7 && playerX < blocoX7 + largurabloco7) {
 						maxAlt = 0;
 						noChao = 1;
 					}
 
-					if (playerY + alturaPlayer >= 620 && playerX + larguraPlayer > blocoX8 && blocoX8 < blocoX8 + largurabloco8) {
+					if (playerY + alturaPlayer >= 620 && pePlayer <= blocoY8 && playerX + larguraPlayer > blocoX8 && playerX < blocoX8 + largurabloco8) {
 						maxAlt = 0;
 						noChao = 1;
 					}
@@ -1435,6 +1449,8 @@ int main()
 		al_destroy_bitmap(morte);
 		al_destroy_bitmap(chao);
 		al_destroy_bitmap(final);
+		al_destroy_bitmap(cut);
+		al_destroy_bitmap(scene);
 
 		al_destroy_bitmap(coracao1);
 		al_destroy_bitmap(coracao2);
