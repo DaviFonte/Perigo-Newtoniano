@@ -552,7 +552,7 @@ int main()
 		if (evento.type == ALLEGRO_EVENT_TIMER) {
 
 			/* TIMER DOS DIALOGOS */
-			if (dialogo != 0 && al_get_time() - tempoDialogo >= 7.0) {
+			if (dialogo != 0 && al_get_time() - tempoDialogo >= 9.0) {
 
 				if (dialogo == 2) {
 					naoPegou = 0;
@@ -564,7 +564,7 @@ int main()
 			}
 			/* TIMER DOS DIALOGOS */
 
-			/* O jogo fica pausado enquanto o dialogo estiver aberto */
+		 
 			if (dialogo == 0) {
 
 				/*------------------ INIMIGOS SEGINDO O NEWTON  ---------------------------*/
@@ -1201,10 +1201,6 @@ int main()
 				if (fase0 == 1 && armaPegada == 0 && playerX + larguraPlayer >= armaX) {
 					playerX = armaX - larguraPlayer;
 					armaPegada = 1;
-					esquerda = 0;
-					direita = 0;
-					segurando = 0;
-					shift = 0;
 					dialogo = 2;
 					tempoDialogo = al_get_time();
 				}
@@ -1213,10 +1209,6 @@ int main()
 				/* Depois do primeiro disparo do tutorial */
 				if (fase0 == 1 && tiroTutorial == 1 && tiroAtivo == 0 && dialogo == 0) {
 					tiroTutorial = 0;
-					esquerda = 0;
-					direita = 0;
-					segurando = 0;
-					shift = 0;
 					dialogo = 3;
 					tempoDialogo = al_get_time();
 				}
@@ -1225,8 +1217,6 @@ int main()
 				/* Dialogo da terceira fase */
 				if (fase3 == 1 && playerX >= 1290 && dialogoFase3Mostrado == 0 && dialogo == 0) {
 					dialogoFase3Mostrado = 1;
-					esquerda = 0;
-					direita = 0;
 					segurando = 0;
 					dialogo = 4;
 					tempoDialogo = al_get_time();
@@ -1280,7 +1270,7 @@ int main()
 		}
 			if (fase6 == 1) {
 				al_draw_scaled_bitmap(scene, 0 /*inicio X da imagem*/, 0 /*inicio Y da imagem*/, al_get_bitmap_width(scene), al_get_bitmap_height(scene),
-					0 - cameraX /*X comeca do 0 */, 150 /*Y comeca do 0*/, 1574, 700, 0 /* 0 diz que a imgagem nao precisa ser invertida */);
+					0 - cameraX /*X comeca do 0 */, 0 /*Y comeca do 0*/, 1574, 700, 0 /* 0 diz que a imgagem nao precisa ser invertida */);
 			}
 		
 	
@@ -1378,17 +1368,16 @@ int main()
 		al_draw_scaled_bitmap(chao2, 50, 0, al_get_bitmap_width(chao), 130, -cameraX, chaoY, larguraFase, 980 - chaoY, 0);
 	}
 	/*---------------- DESENHA ARVORES PELO MAPA E O CHAO  ------------------*/
-
 	if (start == 1) {
 		al_draw_bitmap(inicio, 0, 0, 0);
 		al_draw_filled_rectangle(760, 470, 1220, 580, al_map_rgba(255, 0, 0, 0));
 		al_draw_filled_rectangle(760, 640, 1220, 770, al_map_rgba(255, 0, 0, 0));
-
 		if (mouse == 1 && evento.mouse.x >= 760 && evento.mouse.x <= 1220 && evento.mouse.y >= 470 && evento.mouse.y <= 580) {
 			start = 0;
 			mouse = 0;
 			fase0 = 1;
 			perso = 1;
+
 			playerX = 100;
 			playerY = 530;
 
@@ -1435,8 +1424,6 @@ int main()
 		al_draw_filled_rectangle(blocoX7 - cameraX, blocoY7, blocoX7 - cameraX + largurabloco7, blocoY7 + alturabloco7, al_map_rgba(255, 0, 0, 0));
 
 		al_draw_filled_rectangle(blocoX8 - cameraX, blocoY8, blocoX8 - cameraX + largurabloco8, blocoY8 + alturabloco8, al_map_rgba(255, 0, 0, 0));
-
-
 	}
 
 
@@ -1648,7 +1635,7 @@ int main()
 		al_draw_scaled_bitmap(morte, 0, 0, al_get_bitmap_width(morte), al_get_bitmap_height(morte), 0 - cameraX, 0, 1671, 941, 0);
 		al_draw_filled_rectangle(500, 750, 1150, 900, al_map_rgba(255, 0, 0, 0));
 	}
-	if (telaMorte == 1 && mouse == 1 && evento.mouse.x >= 500 && evento.mouse.x <= 1150 && evento.mouse.y >= 750 && evento.mouse.y <= 900) {
+	if (telaMorte ==2 && mouse == 1 && evento.mouse.x >= 500 && evento.mouse.x <= 1150 && evento.mouse.y >= 750 && evento.mouse.y <= 900) {
 		fase1 = 1;
 		telaMorte = 0;
 
@@ -1671,39 +1658,51 @@ int main()
 		inimigoX4 = 4000;
 	}
 
-
 	if (dialogo != 0) {
 
-		al_draw_filled_rectangle(80, 750, 1420, 940,
-			al_map_rgba(10, 10, 20, 230));
+		al_draw_filled_rectangle(0, 750, 1500, 940,al_map_rgba(10, 10, 20, 230));
 
-		al_draw_rectangle(80, 750, 1420, 940,
-			al_map_rgb(220, 190, 130), 5);
+		al_draw_rectangle(0, 750, 1500, 940,al_map_rgb(100, 100, 255), 5);
 
-		al_draw_text(fonte, al_map_rgb(255, 210, 100),
-			120, 775, 0, "NEWTON");
+		al_draw_text(fonte, al_map_rgb(255, 255, 255),120/*X*/, 775/*Y*/, 0, "NEWTON");
 
-		if (dialogo == 1)
-			al_draw_multiline_text(fonte, al_map_rgb(255, 255, 255), 120, 825, 1240, 40, 0, "Oh, o que e isso?");
+		if (dialogo == 1) {
+			al_draw_multiline_text(fonte, al_map_rgb(255, 255, 0), 120, 825, 1240, 40, 0, "Oh, o que e isso? (W, A , S , D e shift para se movimentar) ");
+		}
 
-		if (dialogo == 2)
-			al_draw_multiline_text(fonte, al_map_rgb(255, 255, 255), 120, 825, 1240, 40, 0, "Parece que isto atira macas. Que interessante! Deixe-me testar.");
+		if (dialogo == 2) {
+			al_draw_multiline_text(fonte, al_map_rgb(255, 255, 0), 120, 825, 1240, 40, 0, "Parece que isto atira macas. Que interessante! Deixe-me testar. ( tente apertar F)");
+		}
 
-		if (dialogo == 3)
-			al_draw_multiline_text(fonte, al_map_rgb(255, 255, 255), 120, 825, 1240, 40, 0, "Nossa! Parece que a mesma forca que faz a maca sair e aplicada para tras com a mesma intensidade. Isso me joga para tras, como um empurrao!");
+		if (dialogo == 3) {
+			al_draw_multiline_text(fonte, al_map_rgb(255, 255, 0), 120, 825, 1240, 40, 0, "Nossa! O canhao empurra a maça para frente, mas a maça tambem empurra o canhao para tras com a mesma intensidade! Por isso sou impulsionado para tras!");
+		}
 
-		if (dialogo == 4)
-			al_draw_multiline_text(fonte, al_map_rgb(255, 255, 255), 120, 825, 1240, 40, 0, "Parece que vou ter que me impulsionar usando a reacao para escalar estes obstaculos. Tente apertar ESPACO + F!");
+		if (dialogo == 4) {
+			al_draw_multiline_text(fonte, al_map_rgb(255, 255, 0), 120, 825, 1240, 40, 0, "Se eu disparar a maça para baixo, ela empurra o canhao para cima com a mesma intensidade! talvez consiga me impulsionar para escalar estes obstaculos. Tente apertar ESPAÇO + F");
+		}
 
-		if (dialogo == 5)
-			al_draw_multiline_text(fonte, al_map_rgb(255, 255, 255), 120, 825, 1240, 40, 0, "Hmm, por que sera que a maca sempre cai para baixo? Sera que existe algum tipo de forca puxando-a?");
+		if (dialogo == 5) {
+			al_draw_multiline_text(fonte, al_map_rgb(255, 255, 0), 120, 825, 1240, 40, 0, "Hmm, por que sera que a maca sempre e puxada para baixo? Sera que existe algum tipo de forca a puxando?");
+		}
 	}
-
 	if (mostrarTelaFim == 1) {
 		fase6 = 0;
-		al_draw_scaled_bitmap(telaFim, 0, 0 ,al_get_bitmap_width(telaFim), al_get_bitmap_height(telaFim), 0, 150, 1500, 700, 0);
+		al_draw_scaled_bitmap(telaFim, 0, 0 ,al_get_bitmap_width(telaFim), al_get_bitmap_height(telaFim), 0, 0, 1500, 1024, 0);
+		al_draw_filled_rectangle(500, 650, 1000, 780, al_map_rgba(255, 0, 0, 0));
+		al_draw_filled_rectangle(500, 810, 1000, 960, al_map_rgba(255, 0, 0, 0));
+	}
+	if (mostrarTelaFim == 1 && mouse == 1 && evento.mouse.x >= 500 && evento.mouse.x <= 1000 && evento.mouse.y >= 650 && evento.mouse.y <= 780) {
+		mostrarTelaFim = 0;
+		fase0 = 1;
+		perso = 1;
+		playerX = 100;
+	}
+	if (mostrarTelaFim == 1 && mouse == 1 && evento.mouse.x >= 500 && evento.mouse.x <= 1000 && evento.mouse.y >= 810 && evento.mouse.y <= 960) {
+		rodando = 0;
 	}
 
+	
 	al_flip_display(); /* Atualiza a janela, altera de desenhando para visivel */
 }
 
